@@ -1,5 +1,8 @@
+import 'package:bmi_calculator_o/calculator_brain.dart';
+import 'package:bmi_calculator_o/components/bottom_button.dart';
 import 'package:bmi_calculator_o/components/round_button_icon.dart';
 import 'package:bmi_calculator_o/constant.dart';
+import 'package:bmi_calculator_o/screens/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../components/reusable_widget.dart';
@@ -176,11 +179,11 @@ class _InputPageState extends State<InputPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Berat',
+                          'Umur',
                           style: kLabelStyle,
                         ),
                         Text(
-                          weight.toString(),
+                          age.toString(),
                           style: kNumberTextStyle,
                         ),
                         Row(
@@ -190,7 +193,7 @@ class _InputPageState extends State<InputPage> {
                               icon: FontAwesomeIcons.minus,
                               onPressed: () {
                                 setState(() {
-                                  if (weight > 30) weight--;
+                                  if (age > 1) age--;
                                 });
                               },
                             ),
@@ -201,7 +204,7 @@ class _InputPageState extends State<InputPage> {
                               icon: FontAwesomeIcons.plus,
                               onPressed: () {
                                 setState(() {
-                                  weight++;
+                                  age++;
                                 });
                               },
                             ),
@@ -216,15 +219,21 @@ class _InputPageState extends State<InputPage> {
 
             // Untuk tombol calculate
 
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 10.0),
-              decoration: BoxDecoration(
-                  color: kBottomContainerColor), //Color(0xFF1D1E33),
-              // borderRadius: BorderRadius.circular(10.0)),
-              height: kBottomContainerHeight,
-              width: double.infinity,
-              child: Text("CALCULATE"),
+            BottomButton(
+              buttonText: 'HITUNG',
+              onTap: () {
+                CalculatorBrain hitung =
+                    CalculatorBrain(height: height, weight: weight);
+                Navigator.pushNamed(
+                  context,
+                  ResultPage.routeName,
+                  arguments: ResultPage(
+                    bmiResult: hitung.calculateBMI(),
+                    resultText: hitung.getResult(),
+                    interpretation: hitung.getInterpretation(),
+                  ),
+                );
+              },
             )
           ],
         ));
